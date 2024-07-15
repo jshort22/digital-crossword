@@ -96,7 +96,6 @@ class Crossword:
                 letter_box.grid(sticky="nsew")
 
                 letter_box.bind("<KeyRelease>", self.on_key_release)
-                letter_box.bind("<BackSpace>", self.delete_and_focus_prev)
 
                 letter_box.grid_rowconfigure(0, weight=1)
                 letter_box.grid_columnconfigure(0, weight=1)
@@ -143,15 +142,20 @@ class Crossword:
 
             next_widget = next_widget.tk_focusNext()
 
+        print(event.keycode)
+
     def on_key_release(self, event: Any):
-        self.capitalize_letter(event)
-        if self.check_grid_full(event):
-            if not self.compare_grids(event):
-                messagebox.showwarning(
-                    "Update", "At least 1 letter is wrong. Keep trying!"
-                )
-            return
-        self.focus_next_entry(event)
+        if event.keycode == 855638143:
+            self.delete_and_focus_prev(event)
+        else:
+            self.capitalize_letter(event)
+            if self.check_grid_full(event):
+                if not self.compare_grids(event):
+                    messagebox.showwarning(
+                        "Update", "At least 1 letter is wrong. Keep trying!"
+                    )
+                return
+            self.focus_next_entry(event)
 
     def delete_and_focus_prev(self, event: Any):
         latest_widget = event.widget
